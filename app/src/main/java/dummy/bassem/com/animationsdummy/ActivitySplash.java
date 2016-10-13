@@ -18,7 +18,7 @@ import dummy.bassem.com.animationsdummy.helpers.AnimationsHelper;
 public class ActivitySplash extends AppCompatActivity {
     TextView helloTextView;
     RelativeLayout helloContainer;
-
+// test git
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
