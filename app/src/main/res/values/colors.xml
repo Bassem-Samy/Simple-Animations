@@ -3,4 +3,6 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorPistache">#18B18C</color>
+    <color name="colorLightPistache">#09C194</color>
 </resources>

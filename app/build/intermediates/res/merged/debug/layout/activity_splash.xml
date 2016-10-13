@@ -1,41 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_splash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPistache"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="dummy.bassem.com.animationsdummy.ActivitySplash">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        >
+        android:orientation="vertical">
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="repeat"
-            android:layout_gravity="center"
-            android:onClick="repeatButtonOnClick"/>
-    </FrameLayout>
+            android:layout_gravity="top"
+            android:onClick="repeatButtonOnClick"
+            android:text="repeat" />
 
-    <RelativeLayout
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/colorLightPistache" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.ogaclejapan.arclayout.ArcLayout
+                android:id="@+id/arc_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:arc_axisRadius="10dp"
+                app:arc_color="#ff00"
+                app:arc_freeAngle="false"
+                app:arc_origin="top"
+                app:arc_radius="125dp"
+                app:arc_reverseAngle="false" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frm_progress_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/rltv_hello_container">
-        <TextView
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="hello animation"
-            android:id="@+id/tv_hello"/>
-    </RelativeLayout>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/margin10"
+            android:indeterminateDrawable="@drawable/progress_rotate"
+            android:padding="@dimen/padding15" />
+    </FrameLayout>
 
 </LinearLayout>
