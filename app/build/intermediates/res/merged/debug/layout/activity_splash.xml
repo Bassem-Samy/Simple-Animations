@@ -30,11 +30,17 @@
             android:layout_weight="0"
             android:orientation="vertical">
 
-            <View
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorLightPistache" />
+                android:background="@color/colorLightPistache" >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/p1"
+                    android:id="@+id/img_logo"/>
+                </FrameLayout>
 
             <ImageView
                 android:layout_width="match_parent"
@@ -57,6 +63,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/margin10"
             android:indeterminateDrawable="@drawable/progress_rotate"
+            android:visibility="invisible"
             android:padding="@dimen/padding15" />
     </FrameLayout>
 

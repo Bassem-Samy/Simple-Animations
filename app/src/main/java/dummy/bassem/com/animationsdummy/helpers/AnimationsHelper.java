@@ -20,34 +20,115 @@ public class AnimationsHelper {
 
 
     // move vertically by providing dimensions
+
+    /**
+     * Moves  a view vertically by providing base and to points
+     *
+     * @param view
+     * @param basePoint
+     * @param toPoint
+     * @param duration
+     * @param endListener
+     */
     public static void moveVertically(final View view, float basePoint, float toPoint, long duration, final MyAnimationsListener endListener) {
         ValueAnimator animator = new ValueAnimator().ofFloat(basePoint, toPoint);
         completeVerticalAnimaion(animator, view, duration, endListener);
 
     }
 
-    // animate child's height to fill parent
-    public static void animateHeightToFillParent(final View childView, final View parentView, final long duration, final MyAnimationsListener endListener, final Context context) {
+    /**
+     * animates height property for a view
+     *
+     * @param view
+     * @param duration
+     * @param desiredHeight
+     * @param endListener
+     */
+    public static void animateHeight(final View view, final long duration, final float desiredHeight, final MyAnimationsListener endListener) {
+        final ViewGroup.LayoutParams params = view.getLayoutParams();
+
+        ValueAnimator animator = new ValueAnimator().ofFloat(view.getHeight(), desiredHeight);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                params.height = (int) value;
+                view.setLayoutParams(params);
+            }
+        });
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (endListener != null)
+                    endListener.onAnimationEnd(animation);
+            }
+        });
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setDuration(duration);
+        animator.start();
+    }
+
+    /**
+     * animates a child view to fill it's parent
+     *
+     * @param childView
+     * @param parentView
+     * @param duration
+     * @param endListener
+     */
+    public static void animateHeightToFillParent(final View childView, final View parentView, final long duration, final MyAnimationsListener endListener) {
         if (parentView.getHeight() == 0) {
             parentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
                     parentView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    continueAnimateHeightToFillParent(childView, parentView, duration, endListener, context);
+                    continueAnimateHeightToFillParent(childView, parentView, duration, endListener);
                 }
             });
         } else
-            continueAnimateHeightToFillParent(childView, parentView, duration, endListener, context);
+            continueAnimateHeightToFillParent(childView, parentView, duration, endListener);
 
     }
 
-    // continue animateHeightToFillParent
-    private static void continueAnimateHeightToFillParent(final View childView, View parentView, long duration, final MyAnimationsListener endListener, final Context context) {
+    /**
+     * moves an element vertically to the top of parent by providing the child and parent views
+     *
+     * @param childView
+     * @param parentView
+     * @param duration
+     * @param fromOutsideOfParent
+     * @param endListener
+     */
+    public static void moveUpToParent(final View childView, final View parentView, final long duration, final boolean fromOutsideOfParent, final MyAnimationsListener endListener) {
+        if (parentView.getHeight() == 0) {
+            parentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    parentView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    // get heights and so;
+                    continueMoveUpToParent(childView, parentView, duration, fromOutsideOfParent, endListener);
+
+                }
+
+            });
+        } else
+            continueMoveUpToParent(childView, parentView, duration, fromOutsideOfParent, endListener);
+    }
+
+    /**
+     * private method to continue animating the child to fill it's parent by height
+     *
+     * @param childView
+     * @param parentView
+     * @param duration
+     * @param endListener
+     */
+    private static void continueAnimateHeightToFillParent(final View childView, View parentView, long duration, final MyAnimationsListener endListener) {
         final float childHeight = childView.getHeight();
-        float parentHeight = parentView.getHeight();
-        float parentPadding=parentView.getPaddingTop()+parentView.getPaddingBottom();
+        final float parentHeight = parentView.getHeight();
+        float parentPadding = parentView.getPaddingTop() + parentView.getPaddingBottom();
         final ViewGroup.LayoutParams params = childView.getLayoutParams();
-        ValueAnimator animator = new ValueAnimator().ofFloat(0, parentHeight);
+        ValueAnimator animator = new ValueAnimator().ofFloat(childHeight, parentHeight - parentPadding);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -66,6 +147,7 @@ public class AnimationsHelper {
                 if (endListener != null)
                     endListener.onAnimationEnd(animation);
 
+
             }
         });
 
@@ -75,24 +157,16 @@ public class AnimationsHelper {
 
     }
 
-    // move vertically to the top of parent by providing parent only no dimensions and save calculations on the UI side
-    public static void moveUpToParent(final View childView, final View parentView, final long duration, final boolean fromOutsideOfParent, final MyAnimationsListener endListener) {
-        if (parentView.getHeight() == 0) {
-            parentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    parentView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    // get heights and so;
-                    continueMoveUpToParent(childView, parentView, duration, fromOutsideOfParent, endListener);
 
-                }
-
-            });
-        } else
-            continueMoveUpToParent(childView, parentView, duration, fromOutsideOfParent, endListener);
-    }
-
-    // continue moveUpToParent
+    /**
+     * private method to continue moving an element up to it's parent
+     *
+     * @param childView
+     * @param parentView
+     * @param duration
+     * @param fromOutsideOfParent
+     * @param endListener
+     */
     private static void continueMoveUpToParent(final View childView, final View parentView, final long duration, final boolean fromOutsideOfParent, final MyAnimationsListener endListener) {
         float childHeight = childView.getHeight();
         float parentHeight = parentView.getHeight();
@@ -104,7 +178,14 @@ public class AnimationsHelper {
         completeVerticalAnimaion(animator, childView, duration, endListener);
     }
 
-    // apply translate y animation
+    /**
+     * private method to complete vertical animation on a view
+     *
+     * @param animator
+     * @param toAnimateView
+     * @param duration
+     * @param endListener
+     */
     private static void completeVerticalAnimaion(ValueAnimator animator, final View toAnimateView, final long duration, final MyAnimationsListener endListener) {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
