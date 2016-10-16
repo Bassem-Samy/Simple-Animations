@@ -23,8 +23,10 @@ public class ActivitySplash extends AppCompatActivity {
     ProgressBar progressBar;
     FrameLayout progressContainer;
     final long progressDuration = 250;
-    View arcView;
-    ArcLayout arcLayout;
+    final long bounceFirstDuration = 1000;
+    LinearLayout bounceLinearLayout;
+    LinearLayout splashContainerLinearLayout;
+
 
     // test git
     @Override
@@ -33,21 +35,14 @@ public class ActivitySplash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         progressBar = (ProgressBar) findViewById(R.id.progress);
         progressContainer = (FrameLayout) findViewById(R.id.frm_progress_container);
-        // arcView = (View) findViewById(R.id.arc_view);
-        arcLayout = (ArcLayout) findViewById(R.id.arc_layout);
         progressContainer.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
+        bounceLinearLayout = (LinearLayout) findViewById(R.id.lnr_to_bounce);
+        splashContainerLinearLayout = (LinearLayout) findViewById(R.id.lnr_splash_container);
         animateHelloToTop();
-       // initializeArc();
+
 
     }
 
-    private void initializeArc() {
-        long width = progressContainer.getWidth();
-        arcLayout.setRadius((int) (1 * width));
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
-       // params.setMargins(0, (int) (-1 *width)+150, 0, 0);
-        arcLayout.setLayoutParams(params);
-    }
 
     private void animateHelloToTop() {
         AnimationsHelper.moveUpToParent(progressBar, progressContainer, progressDuration, true, endOfMoveUpListener);
@@ -56,14 +51,28 @@ public class ActivitySplash extends AppCompatActivity {
     AnimationsHelper.MyAnimationsListener endOfMoveUpListener = new AnimationsHelper.MyAnimationsListener() {
         @Override
         public void onAnimationEnd(Animator animaton) {
-            Toast.makeText(ActivitySplash.this, "yo yo yo", Toast.LENGTH_SHORT).show();
+            animateBounceLayout();
         }
+
+
     };
+
+    private void animateBounceLayout() {
+        AnimationsHelper.animateHeightToFillParent(bounceLinearLayout, splashContainerLinearLayout, bounceFirstDuration, firstBounceEndListener,this);
+    }
+
     ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
             progressContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-initializeArc();
+
+        }
+    };
+    private AnimationsHelper.MyAnimationsListener firstBounceEndListener = new AnimationsHelper.MyAnimationsListener() {
+        @Override
+        public void onAnimationEnd(Animator animaton) {
+            Toast.makeText(ActivitySplash.this, "yo yo yo", Toast.LENGTH_SHORT).show();
+
         }
     };
 

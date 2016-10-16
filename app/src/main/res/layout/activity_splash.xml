@@ -8,41 +8,41 @@
     android:background="@color/colorPistache"
     android:orientation="vertical"
     tools:context="dummy.bassem.com.animationsdummy.ActivitySplash">
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:onClick="repeatButtonOnClick"
+        android:text="repeat" />
     <LinearLayout
+        android:id="@+id/lnr_splash_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:onClick="repeatButtonOnClick"
-            android:text="repeat" />
 
-        <View
+
+        <LinearLayout
+            android:id="@+id/lnr_to_bounce"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@color/colorLightPistache" />
+            android:layout_weight="0"
+            android:orientation="vertical">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/colorLightPistache" />
 
-            <com.ogaclejapan.arclayout.ArcLayout
-                android:id="@+id/arc_layout"
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:arc_axisRadius="10dp"
-                app:arc_color="#ff00"
-                app:arc_freeAngle="false"
-                app:arc_origin="top"
-                app:arc_radius="125dp"
-                app:arc_reverseAngle="false" />
-        </FrameLayout>
+                android:scaleType="fitXY"
+                android:src="@drawable/arc_1" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <FrameLayout
