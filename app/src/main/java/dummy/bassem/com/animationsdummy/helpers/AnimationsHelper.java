@@ -135,7 +135,7 @@ public class AnimationsHelper {
                 float value = (float) animation.getAnimatedValue();
                 params.height = (int) value;
 
-                Log.e("height value", Float.toString(value));
+
                 childView.setLayoutParams(params);
 
 
@@ -206,6 +206,96 @@ public class AnimationsHelper {
 
         animator.setInterpolator(linearInterpolator);
         animator.setDuration(duration);
+        animator.start();
+    }
+
+    /**
+     * Moves a view horizontally
+     *
+     * @param toMoveView
+     * @param startValue
+     * @param endValue
+     * @param duration
+     * @param endListener
+     */
+    private static void moveHorizontally(final View toMoveView, float startValue, float endValue, long duration, final MyAnimationsListener endListener) {
+        ValueAnimator animator = new ValueAnimator().ofFloat(startValue, endValue);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                toMoveView.setTranslationX(value);
+            }
+        });
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (endListener != null)
+                    endListener.onAnimationEnd(animation);
+            }
+        });
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setDuration(duration);
+
+        animator.start();
+    }
+
+    public static void enterHorizontally(final View toMoveView, final View parentView, final long duration, final MyAnimationsListener endListener) {
+        if (parentView.getWidth() == 0) {
+            parentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    parentView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    continueEnterHorizontally(toMoveView, parentView, duration, endListener);
+                }
+
+
+            });
+        } else
+            continueEnterHorizontally(toMoveView, parentView, duration, endListener);
+    }
+
+    /**
+     * continues entry of an element horizontally
+     *
+     * @param toMoveView
+     * @param parentView
+     * @param duration
+     * @param endListener
+     */
+    private static void continueEnterHorizontally(final View toMoveView, View parentView, final long duration, final MyAnimationsListener endListener) {
+        float startingPoint = (-1) * toMoveView.getWidth();
+        float endPoint = (parentView.getWidth() / 2) - (toMoveView.getWidth() / 2);
+        moveHorizontally(toMoveView, startingPoint, endPoint, duration, new MyAnimationsListener() {
+            @Override
+            public void onAnimationEnd(Animator animaton) {
+                //doBreaksAnimation(toMoveView,);
+            }
+        });
+
+
+    }
+
+    public static void doBreaksAnimation(final View toMoveView, float amountToMove, long duration, MyAnimationsListener endListener) {
+
+        final ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) toMoveView.getLayoutParams();
+        ValueAnimator animator = new ValueAnimator().ofFloat(params.getMarginStart(), params.getMarginStart() + amountToMove);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                params.setMarginStart((int) value);
+                Log.e("value", Float.toString(value));
+                toMoveView.setLayoutParams(params);
+            }
+        });
+        animator.setInterpolator(new LinearInterpolator());
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+            }
+        });
         animator.start();
     }
 

@@ -28,6 +28,7 @@ public class ActivitySplash extends AppCompatActivity {
     final long progressDuration = 250;
     final long bounceFirstDuration = 350;
     final long bounceSecondDuration = 200;
+    final long logoIntranceDuration=1000;
     LinearLayout bounceLinearLayout;
     LinearLayout splashContainerLinearLayout;
     ImageView logoImageView;
@@ -94,6 +95,14 @@ public class ActivitySplash extends AppCompatActivity {
         @Override
         public void onAnimationEnd(Animator animaton) {
             //Toast.makeText(ActivitySplash.this, "yo yo yo", Toast.LENGTH_SHORT).show();
+            logoImageView.setVisibility(View.VISIBLE);
+            AnimationsHelper.enterHorizontally(logoImageView, splashContainerLinearLayout, logoIntranceDuration, entranceEndAnimationsListener);
+        }
+    };
+    AnimationsHelper.MyAnimationsListener entranceEndAnimationsListener = new AnimationsHelper.MyAnimationsListener() {
+        @Override
+        public void onAnimationEnd(Animator animaton) {
+            AnimationsHelper.doBreaksAnimation(logoImageView, 50, logoIntranceDuration/50, null);
         }
     };
 
