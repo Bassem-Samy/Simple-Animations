@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 /**
  * Created by Bassem.Wissa on 10/12/2016.
@@ -298,6 +300,35 @@ public class AnimationsHelper {
         });
         animator.start();
     }
+
+    public static void enterHorizontallyWithSlide(final View toMoveView, final View parentView, final long duration, final float slideAmmount, final long slideBackDuration, final MyAnimationsListener endListener) {
+        if (parentView.getWidth() == 0) {
+            parentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    parentView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    continueEnterHorizontallyWithSlide(toMoveView, parentView, duration, slideAmmount, slideBackDuration, endListener);
+                }
+
+
+            });
+        } else
+            continueEnterHorizontallyWithSlide(toMoveView, parentView, duration, slideAmmount, slideBackDuration, endListener);
+    }
+
+    private static void continueEnterHorizontallyWithSlide(final View toMoveView, View parentView, final long duration, final float slideAmmount, final long slideBackDuration, final MyAnimationsListener endListener) {
+        final float startingPoint = (-1) * toMoveView.getWidth();
+        final float endPoint = (parentView.getWidth() / 2) - (toMoveView.getWidth() / 2) + slideAmmount;
+
+        moveHorizontally(toMoveView, startingPoint, endPoint, duration, new MyAnimationsListener() {
+            @Override
+            public void onAnimationEnd(Animator animaton) {
+                //doBreaksAnimation(toMoveView,);
+                moveHorizontally(toMoveView, endPoint, endPoint - slideAmmount, slideBackDuration, endListener);
+            }
+        });
+    }
+
 
     // Listener that takes an animator as a parameter
     public interface MyAnimationsListener {

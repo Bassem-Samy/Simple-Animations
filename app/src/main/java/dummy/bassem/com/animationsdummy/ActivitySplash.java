@@ -28,7 +28,9 @@ public class ActivitySplash extends AppCompatActivity {
     final long progressDuration = 250;
     final long bounceFirstDuration = 350;
     final long bounceSecondDuration = 200;
-    final long logoIntranceDuration=1000;
+    final long logoIntranceDuration = 500;
+    final long slideBackDuration = 75;
+    final float slideAmmount = 100;
     LinearLayout bounceLinearLayout;
     LinearLayout splashContainerLinearLayout;
     ImageView logoImageView;
@@ -58,6 +60,10 @@ public class ActivitySplash extends AppCompatActivity {
 
     private void animateHelloToTop() {
         progressBar.setVisibility(View.VISIBLE);
+        ViewGroup.LayoutParams params = bounceLinearLayout.getLayoutParams();
+        params.height = 0;
+        bounceLinearLayout.setLayoutParams(params);
+        logoImageView.setVisibility(View.INVISIBLE);
         AnimationsHelper.moveUpToParent(progressBar, progressContainer, progressDuration, true, endOfMoveUpListener);
     }
 
@@ -96,13 +102,13 @@ public class ActivitySplash extends AppCompatActivity {
         public void onAnimationEnd(Animator animaton) {
             //Toast.makeText(ActivitySplash.this, "yo yo yo", Toast.LENGTH_SHORT).show();
             logoImageView.setVisibility(View.VISIBLE);
-            AnimationsHelper.enterHorizontally(logoImageView, splashContainerLinearLayout, logoIntranceDuration, entranceEndAnimationsListener);
+            AnimationsHelper.enterHorizontallyWithSlide(logoImageView, splashContainerLinearLayout, logoIntranceDuration, slideAmmount, slideBackDuration, null);
         }
     };
     AnimationsHelper.MyAnimationsListener entranceEndAnimationsListener = new AnimationsHelper.MyAnimationsListener() {
         @Override
         public void onAnimationEnd(Animator animaton) {
-            AnimationsHelper.doBreaksAnimation(logoImageView, 50, logoIntranceDuration/50, null);
+            AnimationsHelper.doBreaksAnimation(logoImageView, 50, logoIntranceDuration / 50, null);
         }
     };
 
