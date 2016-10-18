@@ -11,3 +11,18 @@ This is a project, where there's a class "AnimationsHelper" it's a static class 
 the good thing about these methods, is that you can simply animate a view inside it's parent by only providing that view, the parent view and the duration of animation
 no need to implement translations or property animations, all is already made and you can modify the code to suit you more :)
 
+Here's the sample activity
+
+![alt tag](http://i.giphy.com/3o7TKBA1YnryIt9kru.gif)
+
+
+
+By order
+the progress bar uses MooveUpToParent,
+then on end Listener, the lighter arc is animated by animateHeightToFillParent, then calls animateHeight(to give the kinda bounce effect)
+after that, the coolest part of the app comes :D the "panda hi" 
+it uses enterHorizontallyWithSlide and that's it
+
+you are very welcome to suggest enhancements and better practices and to add stuff 
+Thanks :) and hope it helps  in one way or another :D
+peace.
